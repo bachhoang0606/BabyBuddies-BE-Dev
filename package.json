@@ -28,16 +28,15 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^7.0.2",
     "lint-staged": "^11.2.0",
+    "nodemon": "^2.0.22",
     "prettier": "^2.0.5"
   },
   "lint-staged": {
-    "*.js": "eslint"
+    "": "eslint"
   }
 }
