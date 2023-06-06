@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "postinstall": "husky install"
+    "dev": "nodemon src/index.js"
   },
   "author": "",
   "license": "ISC",
