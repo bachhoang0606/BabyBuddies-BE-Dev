@@ -1,3 +1,4 @@
+const staff = require('../models/staff')
 const Staff = require('../models/staff')
 const matchingService = require('../services/matching')
 
@@ -15,5 +16,16 @@ const getData = async (req, res) => {
     return res.json(data);
 }
 
+const searchStaff = async (req, res) => {
 
-module.exports = { matching, getData }
+            // let filters = req.body;
+            // const regex = new RegExp(filters, "i");
+            // staffs = await Staff.find({ $or: [{ fullName: regex }, { address: regex }, { gender: regex }, { phone: regex }, { email: regex }, { birthday: regex }] }).exec()
+            // console.log(employees)
+            // return res.json(staffs);
+
+            console.log(req.body)
+}
+
+
+module.exports = { matching, getData, searchStaff }
