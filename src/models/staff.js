@@ -32,7 +32,7 @@ const staffSchema = new mongoose.Schema(
       {
         userId: { type: ObjectId, ref: 'Account', required: true },
         review: { type: String, required: true },
-        start: {
+        star: {
           type: Number,
           min: 1,
           max: 5,
