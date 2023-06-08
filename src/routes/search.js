@@ -3,7 +3,7 @@ const matchingController = require('../controllers/matching');
 
 router.post('/search/matching',matchingController.matching);
 router.get('/getdata',matchingController.getData);
-router.post('/search/searchStaff',matchingController.searchStaff);
+router.get('/search/allStaff',matchingController.allStaff);
 
 
 module.exports = router;

@@ -31,7 +31,7 @@ let searchStaff = async (filters) => {
                 let matchingScore = 0;
                 let numFailedConditions = 0;
 
-                const { rating, salary, userLanguage, careExp, cookExp } = filters;
+                const { rating, salary, userLanguage, careExp, cookExp, address } = filters;
                 // console.log({ rating, salary, userLanguage, careExp, cookExp })
                 // console.log(employee)
                 const averageRating = calculateAverageRating(employee);
@@ -58,6 +58,13 @@ let searchStaff = async (filters) => {
                     }
                 }
 
+                // if (address !== undefined) {
+                //     if (employee.salary <= salary) {
+                //         matchingScore++;
+                //     } else {
+                //         numFailedConditions++;
+                //     }
+                // }
 
 
 
