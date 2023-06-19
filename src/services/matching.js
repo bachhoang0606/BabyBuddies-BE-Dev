@@ -48,9 +48,11 @@ let searchStaff = async (filters) => {
                 }
 
                 if (userLanguage !== undefined) {
-                    const languageNames = await Language.find({ _id: { $in: employee.userLanguage } }).distinct('name');
-                    // console.log(languageNames)
-                    const isMatchingLanguage = languageNames.includes(userLanguage);
+                    const userLanguageName = await Language.find({ _id: { $in: employee.userLanguage } }).distinct('name');
+                    // const employeeWithuserLanguageName = { ...employee._doc, userLanguageName };
+
+                    // console.log(userLanguageName)
+                    const isMatchingLanguage = userLanguageName.includes(userLanguage);
                     if (isMatchingLanguage) {
                         matchingScore = matchingScore + 2;
                     } else {
@@ -108,7 +110,9 @@ let searchStaff = async (filters) => {
                         filters
                         );
                         if (numFailedConditions < 1) {
-                        matchedEmployees.push(employee);
+                            const userLanguageName = await Language.find({ _id: { $in: employee.userLanguage } }).distinct('name');
+                            const employeeWithuserLanguageName = { ...employee._doc, userLanguageName };
+                            matchedEmployees.push(employeeWithuserLanguageName);
                         }
                     }
 
@@ -130,7 +134,9 @@ let searchStaff = async (filters) => {
                         filters
                         );
                         if (numFailedConditions > 0) {
-                        matchedEmployees.push(employee);
+                            const userLanguageName = await Language.find({ _id: { $in: employee.userLanguage } }).distinct('name');
+                            const employeeWithuserLanguageName = { ...employee._doc, userLanguageName };
+                            matchedEmployees.push(employeeWithuserLanguageName);
                         }
                     }
 
