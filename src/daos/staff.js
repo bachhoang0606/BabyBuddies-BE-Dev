@@ -87,7 +87,7 @@ const deleteStaff = async (staffId) => {
   await Staff.findByIdAndDelete(staffId);
 };
 
-const createRating = async (staffId, { userId, review, start }) => {
+const createRating = async (staffId, { userId, review, star }) => {
   const staff = await Staff.findByIdAndUpdate(
     staffId,
     {
@@ -95,7 +95,7 @@ const createRating = async (staffId, { userId, review, start }) => {
         rating: {
           userId,
           review,
-          start,
+          star,
         },
       },
     },

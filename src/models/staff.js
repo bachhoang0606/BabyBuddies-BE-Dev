@@ -27,12 +27,13 @@ const staffSchema = new mongoose.Schema(
     },
     birthday: Date,
     salary: Number,
+    imageLink: String,
     userLanguage: [{ type: ObjectId, ref: 'Language', required: true }],
     rating: [
       {
         userId: { type: ObjectId, ref: 'Account', required: true },
         review: { type: String, required: true },
-        start: {
+        star: {
           type: Number,
           min: 1,
           max: 5,
