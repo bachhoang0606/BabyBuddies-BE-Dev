@@ -16,6 +16,21 @@ const searchStaff = async (filters) => {
             return averageRating;
         }
 
+        function compareExperience(employeeExperience, filterExperience) {
+            const experienceValues = {
+              'non': 0,
+              '1 years': 1,
+              '2 years': 2,
+              '3 years': 3,
+              '> 3 years': Infinity
+            };
+          
+            const employeeYears = experienceValues[employeeExperience];
+            const filterYears = experienceValues[filterExperience];
+          
+            return employeeYears >= filterYears;
+          }
+
         const employees = await Staff.find({});
 
         async function calculateMatchingScore(employee, filters) {
@@ -57,7 +72,7 @@ const searchStaff = async (filters) => {
             }
 
             if (careExp !== undefined) {
-                if (employee.careExp === careExp) {
+                if (compareExperience(employee.careExp, careExp)) {
                     matchingScore += 1.25;
                 } else {
                     numFailedConditions += 1;
@@ -65,7 +80,7 @@ const searchStaff = async (filters) => {
             }
 
             if (cookExp !== undefined) {
-                if (employee.cookExp === cookExp) {
+                if (compareExperience(employee.cookExp, cookExp)) {
                     matchingScore += 1.25;
                 } else {
                     numFailedConditions += 1;
