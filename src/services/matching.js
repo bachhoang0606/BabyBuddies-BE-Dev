@@ -35,8 +35,12 @@ const searchStaff = async (filters) => {
                 } else if (averageRating < rating) {
                     matchingScore1 = (averageRating * 100) / rating;
                 } else {
-                    matchingScore1 =
-                        ((rating - (averageRating - rating)) * 100) / rating;
+                    matchingScore1T = ((rating - (averageRating - rating)) * 100) / rating;
+                    if(matchingScore1T >= 0) {
+                        matchingScore1 = matchingScore1T;
+                    }else{
+                        matchingScore1 = 0;
+                    }
                 }
             }
 
@@ -59,8 +63,13 @@ const searchStaff = async (filters) => {
                 } else if (employee.salary < salary) {
                     matchingScore3 = (employee.salary * 100) / salary;
                 } else {
-                    matchingScore3 =
+                    matchingScore3T =
                         ((salary - (employee.salary - salary)) * 100) / salary;
+                        if(matchingScore3T >= 0) {
+                            matchingScore3 = matchingScore3T;
+                        }else{
+                            matchingScore3 = 0;
+                        }
                 }
             }
 
@@ -77,9 +86,14 @@ const searchStaff = async (filters) => {
                 if (employeeYears === filterYears) {
                     matchingScore4 = 100;
                 } else if (employeeYears > filterYears) {
-                    matchingScore4 =
+                    matchingScore4T =
                         ((filterYears - (employeeYears - filterYears)) * 100) /
                         filterYears;
+                        if(matchingScore4T >= 0) {
+                            matchingScore4 = matchingScore4T;
+                        }else{
+                            matchingScore4 = 0;
+                        }
                 } else {
                     matchingScore4 = (employeeYears * 100) / filterYears;
                 }
@@ -98,9 +112,14 @@ const searchStaff = async (filters) => {
                 if (employeeYears === filterYears) {
                     matchingScore5 = 100;
                 } else if (employeeYears > filterYears) {
-                    matchingScore5 =
+                    matchingScore5T =
                         ((filterYears - (employeeYears - filterYears)) * 100) /
                         filterYears;
+                        if(matchingScore5T >= 0) {
+                            matchingScore5 = matchingScore5T;
+                        }else{
+                            matchingScore5 = 0;
+                        }
                 } else {
                     matchingScore5 = (employeeYears * 100) / filterYears;
                 }
@@ -142,8 +161,9 @@ const searchStaff = async (filters) => {
             // matchedEmployees.sort((a, b) => b.matchingScore - a.matchingScore);
             matchedEmployees.sort((a, b) => parseFloat(b.matchingScore) - parseFloat(a.matchingScore));
 
-        
             return matchedEmployees;
+            // const output = matchedEmployees.slice(0, 10);
+            // return output;
         }
 
         let matchedStaffs = await searchEmployees(filters);
