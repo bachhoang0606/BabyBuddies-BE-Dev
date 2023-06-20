@@ -2,6 +2,7 @@
   "name": "express_boilerplate",
   "version": "1.0.0",
   "scripts": {
+    "pretty": "prettier --single-quote --trailing-comma all --tab-width 4 --write src/**/*.{js,json}",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "postinstall": "husky install"
