@@ -75,7 +75,7 @@ const searchStaff = async (filters) => {
 
             if (careExp !== undefined) {
                 const experienceValues = {
-                    non: 0,
+                    'non': 0,
                     '1 years': 1,
                     '2 years': 2,
                     '3 years': 3,
@@ -101,7 +101,7 @@ const searchStaff = async (filters) => {
 
             if (cookExp !== undefined) {
                 const experienceValues = {
-                    non: 0,
+                    'non': 0,
                     '1 years': 1,
                     '2 years': 2,
                     '3 years': 3,
@@ -166,7 +166,7 @@ const searchStaff = async (filters) => {
             // return output;
         }
 
-        let matchedStaffs = await searchEmployees(filters);
+        const matchedStaffs = searchEmployees(filters);
 
         return matchedStaffs;
     } catch (error) {
