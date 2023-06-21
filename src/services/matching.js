@@ -149,7 +149,7 @@ const searchStaff = async (filters) => {
             languageMap.set(language._id.toString(), language.name);
             });
 
-            const groupedEmployees = {};
+            // const groupedEmployees = {};
             for (let i = 0; i < employees.length; i++) {
                 const employee = employees[i];
                 const matchingScore = matchingResults[i];
