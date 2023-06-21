@@ -143,26 +143,34 @@ const searchStaff = async (filters) => {
             const matchingResults = await Promise.all(matchingPromises);
         
             const matchedEmployees = [];
+            const languageMap = new Map();
+            const languages = await Language.find({}, { _id: 1, name: 1 });
+            languages.forEach((language) => {
+            languageMap.set(language._id.toString(), language.name);
+            });
+
+            const groupedEmployees = {};
             for (let i = 0; i < employees.length; i++) {
                 const employee = employees[i];
                 const matchingScore = matchingResults[i];
-                const userLanguageNames = await Language.find({
-                    _id: { $in: employee.userLanguage },
-                }).distinct('name');
-                const employeeWithuserLanguageName = {
-                    ...employee._doc,
-                    userLanguageNames,
-                    matchingScore: matchingScore.toFixed(2) + '%',
+                const userLanguageNames = employee.userLanguage.map((languageId) =>
+                  languageMap.get(languageId.toString())
+                );
+                const employeeWithUserLanguageName = {
+                  ...employee._doc,
+                  userLanguage: undefined, // Bỏ trường userLanguage
+                  userLanguageNames,
+                  matchingScore: matchingScore.toFixed(2) + '%',
                 };
-                matchedEmployees.push(employeeWithuserLanguageName);
-            }
+                matchedEmployees.push(employeeWithUserLanguageName);
+              }
         
             // Sắp xếp danh sách nhân viên theo điểm phù hợp giảm dần
             // matchedEmployees.sort((a, b) => b.matchingScore - a.matchingScore);
             matchedEmployees.sort((a, b) => parseFloat(b.matchingScore) - parseFloat(a.matchingScore));
 
             return matchedEmployees;
-            // const output = matchedEmployees.slice(0, 10);
+            // const output = matchedEmployees.slice(0, 3);
             // return output;
         }
 
