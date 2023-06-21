@@ -3,46 +3,46 @@ const Language = require('../models/language');
 
 const searchStaff = async (filters) => {
     try {
-        function calculateAverageRating(staff) {
-            if (!staff.rating || staff.rating.length === 0) {
-                return 0;
-            }
+        // function calculateAverageRating(staff) {
+        //     if (!staff.rating || staff.rating.length === 0) {
+        //         return 0;
+        //     }
 
-            const totalRating = staff.rating.reduce(
-                (sum, ratingObj) => sum + ratingObj.star,
-                0
-            );
-            const averageRating = totalRating / staff.rating.length;
-            return averageRating;
-        }
+        //     const totalRating = staff.rating.reduce(
+        //         (sum, ratingObj) => sum + ratingObj.star,
+        //         0
+        //     );
+        //     const averageRating = totalRating / staff.rating.length;
+        //     return averageRating;
+        // }
 
         const employees = await Staff.find({});
 
         async function calculateMatchingScore(employee, filters) {
             let matchingScore = 0;
-            let matchingScore1 = 0;
+            // let matchingScore1 = 0;
             let matchingScore2 = 0;
             let matchingScore3 = 0;
             let matchingScore4 = 0;
             let matchingScore5 = 0;
 
-            const { rating, salary, userLanguage, careExp, cookExp, address } = filters;
-            const averageRating = calculateAverageRating(employee);
+            const { salary, userLanguage, careExp, cookExp } = filters;
+            // const averageRating = calculateAverageRating(employee);
 
-            if (rating !== undefined) {
-                if (averageRating === rating) {
-                    matchingScore1 = 100;
-                } else if (averageRating < rating) {
-                    matchingScore1 = (averageRating * 100) / rating;
-                } else {
-                    matchingScore1T = ((rating - (averageRating - rating)) * 100) / rating;
-                    if(matchingScore1T >= 0) {
-                        matchingScore1 = matchingScore1T;
-                    }else{
-                        matchingScore1 = 0;
-                    }
-                }
-            }
+            // if (rating !== undefined) {
+            //     if (averageRating === rating) {
+            //         matchingScore1 = 100;
+            //     } else if (averageRating < rating) {
+            //         matchingScore1 = (averageRating * 100) / rating;
+            //     } else {
+            //         matchingScore1T = ((rating - (averageRating - rating)) * 100) / rating;
+            //         if(matchingScore1T >= 0) {
+            //             matchingScore1 = matchingScore1T;
+            //         }else{
+            //             matchingScore1 = 0;
+            //         }
+            //     }
+            // }
 
             if (userLanguage !== undefined) {
                 const userLanguages = Array.isArray(userLanguage) ? userLanguage : [userLanguage];
@@ -126,12 +126,12 @@ const searchStaff = async (filters) => {
             }
 
             matchingScore =
-                (matchingScore1 +
+                (
                     matchingScore2 +
                     matchingScore3 +
                     matchingScore4 +
                     matchingScore5) /
-                5;
+                4;
 
             return matchingScore;
         }
