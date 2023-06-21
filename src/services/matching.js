@@ -1,170 +1,185 @@
-const Staff = require('../models/staff')
+const Staff = require('../models/staff');
 const Language = require('../models/language');
 
+const searchStaff = async (filters) => {
+    try {
+        // function calculateAverageRating(staff) {
+        //     if (!staff.rating || staff.rating.length === 0) {
+        //         return 0;
+        //     }
 
-let searchStaff = async (filters) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            
-            
+        //     const totalRating = staff.rating.reduce(
+        //         (sum, ratingObj) => sum + ratingObj.star,
+        //         0
+        //     );
+        //     const averageRating = totalRating / staff.rating.length;
+        //     return averageRating;
+        // }
 
-            function calculateAverageRating(staff) {
-                if (!staff.rating || staff.rating.length === 0) {
-                    return 0;
-                }
+        const employees = await Staff.find({});
 
-                let totalRating = 0;
-                for (const ratingObj of staff.rating) {
-                    totalRating += ratingObj.star;
-                }
+        async function calculateMatchingScore(employee, filters) {
+            let matchingScore = 0;
+            // let matchingScore1 = 0;
+            let matchingScore2 = 0;
+            let matchingScore3 = 0;
+            let matchingScore4 = 0;
+            let matchingScore5 = 0;
 
-                const averageRating = totalRating / staff.rating.length;
-                return averageRating;
+            const { salary, userLanguage, careExp, cookExp } = filters;
+            // const averageRating = calculateAverageRating(employee);
+
+            // if (rating !== undefined) {
+            //     if (averageRating === rating) {
+            //         matchingScore1 = 100;
+            //     } else if (averageRating < rating) {
+            //         matchingScore1 = (averageRating * 100) / rating;
+            //     } else {
+            //         matchingScore1T = ((rating - (averageRating - rating)) * 100) / rating;
+            //         if(matchingScore1T >= 0) {
+            //             matchingScore1 = matchingScore1T;
+            //         }else{
+            //             matchingScore1 = 0;
+            //         }
+            //     }
+            // }
+
+            if (userLanguage !== undefined) {
+                const userLanguages = Array.isArray(userLanguage) ? userLanguage : [userLanguage];
+                const userLanguageNames = await Language.find({ _id: { $in: employee.userLanguage } }).distinct('name');
+                const matchingLanguageCount = userLanguages.reduce((count, lang) => {
+                    if (userLanguageNames.includes(lang)) {
+                        return count + 1;
+                    }
+                    return count;
+                }, 0);
+                matchingScore2 = (matchingLanguageCount / userLanguages.length) * 100;
+                // console.log(matchingScore2);
             }
 
-
-
-            const employees = await Staff.find({})
-
-
-            async  function calculateMatchingScore(employee, filters) {
-                let matchingScore = 0;
-                let numFailedConditions = 0;
-
-                const { rating, salary, userLanguage, careExp, cookExp, address } = filters;
-                // console.log({ rating, salary, userLanguage, careExp, cookExp })
-                // console.log(employee)
-                const averageRating = calculateAverageRating(employee);
-
-                // console.log(averageRating)
-
-                if (rating !== undefined) {
-                    const hasMatchingRating = averageRating >= rating;
-                    if (hasMatchingRating) {
-                        matchingScore = matchingScore + 1.75;
-                    } else {
-                        numFailedConditions = numFailedConditions + 1;
-                    }
-                }
-
-                if (userLanguage !== undefined) {
-                    const languageNames = await Language.find({ _id: { $in: employee.userLanguage } }).distinct('name');
-                    // console.log(languageNames)
-                    const isMatchingLanguage = languageNames.includes(userLanguage);
-                    if (isMatchingLanguage) {
-                        matchingScore = matchingScore + 2;
-                    } else {
-                        numFailedConditions = numFailedConditions + 1;
-                    }
-                }
-
-                // if (address !== undefined) {
-                //     if (employee.salary <= salary) {
-                //         matchingScore++;
-                //     } else {
-                //         numFailedConditions++;
-                //     }
-                // }
-
-
-
-                if (salary !== undefined) {
-                    if (employee.salary <= salary) {
-                        matchingScore++;
-                    } else {
-                        numFailedConditions++;
-                    }
-                }
-
-                if (careExp !== undefined) {
-                    if (employee.careExp === careExp) {
-                        matchingScore = matchingScore + 1.25;
-                    } else {
-                        numFailedConditions = numFailedConditions + 1;
-                    }
-                }
-
-                if (cookExp !== undefined) {
-                    if (employee.cookExp === cookExp) {
-                        matchingScore = matchingScore + 1.25;
-                    } else {
-                        numFailedConditions = numFailedConditions + 1;
-                    }
-                }
-               
-                
-
-                console.log(matchingScore +', '+ numFailedConditions);
-                return { matchingScore, numFailedConditions };
-            }
-
-            // Hàm tìm kiếm nhân viên phù hợp nhất với các tiêu chí
-            async function searchEmployees(filters){
-                
-                let matchedEmployees = [];
-                    for (const employee of employees) {
-                        const { matchingScore, numFailedConditions } = await calculateMatchingScore(
-                        employee,
-                        filters
-                        );
-                        if (numFailedConditions < 1) {
-                        matchedEmployees.push(employee);
+            if (salary !== undefined) {
+                if (employee.salary === salary) {
+                    matchingScore3 = 100;
+                } else if (employee.salary < salary) {
+                    matchingScore3 = (employee.salary * 100) / salary;
+                } else {
+                    matchingScore3T =
+                        ((salary - (employee.salary - salary)) * 100) / salary;
+                        if(matchingScore3T >= 0) {
+                            matchingScore3 = matchingScore3T;
+                        }else{
+                            matchingScore3 = 0;
                         }
-                    }
-
-                // console.log(matchedEmployees[0])
-                // return matchedEmployees
-
-                return matchedEmployees.sort((a, b) => {
-                    const scoreA = calculateMatchingScore(a, filters);
-                    const scoreB = calculateMatchingScore(b, filters);
-                    return scoreB - scoreA;
-                });
-            }
-
-            async function searchFailEmployees(filters) {
-                let matchedEmployees = [];
-                    for (const employee of employees) {
-                        const { matchingScore, numFailedConditions } = await calculateMatchingScore(
-                        employee,
-                        filters
-                        );
-                        if (numFailedConditions > 0) {
-                        matchedEmployees.push(employee);
-                        }
-                    }
-
-                matchedEmployees.sort((a, b) => {
-                    const scoreA = calculateMatchingScore(a, filters);
-                    const scoreB = calculateMatchingScore(b, filters);
-                    return scoreB - scoreA;
-                });
-                output = matchedEmployees.slice(0, 3);
-                // console.log(output);
-                return output;
-            }
-
-
-            dataTestPostman = {
-                // "rating": "2",
-                "userLanguage" :"English",
-                "salary" : "100000"
-                // "careExp": "3",
-                // "cookExp":"3"
-            };
-
-            let matchedStaffs = await searchEmployees(filters);
-
-            if (matchedStaffs.length === 0) {
-                    matchedStaffs = await searchFailEmployees(filters);
-                    // console.log(count++)
                 }
+            }
 
-            resolve(matchedStaffs)
-        } catch (error) {
-            reject(error)
+            if (careExp !== undefined) {
+                const experienceValues = {
+                    'non': 0,
+                    '1 years': 1,
+                    '2 years': 2,
+                    '3 years': 3,
+                    '> 3 years': 4,
+                };
+                const employeeYears = experienceValues[employee.careExp];
+                const filterYears = experienceValues[careExp];
+                if (employeeYears === filterYears) {
+                    matchingScore4 = 100;
+                } else if (employeeYears > filterYears) {
+                    matchingScore4T =
+                        ((filterYears - (employeeYears - filterYears)) * 100) /
+                        filterYears;
+                        if(matchingScore4T >= 0) {
+                            matchingScore4 = matchingScore4T;
+                        }else{
+                            matchingScore4 = 0;
+                        }
+                } else {
+                    matchingScore4 = (employeeYears * 100) / filterYears;
+                }
+            }
+
+            if (cookExp !== undefined) {
+                const experienceValues = {
+                    'non': 0,
+                    '1 years': 1,
+                    '2 years': 2,
+                    '3 years': 3,
+                    '> 3 years': 4,
+                };
+                const employeeYears = experienceValues[employee.cookExp];
+                const filterYears = experienceValues[cookExp];
+                if (employeeYears === filterYears) {
+                    matchingScore5 = 100;
+                } else if (employeeYears > filterYears) {
+                    matchingScore5T =
+                        ((filterYears - (employeeYears - filterYears)) * 100) /
+                        filterYears;
+                        if(matchingScore5T >= 0) {
+                            matchingScore5 = matchingScore5T;
+                        }else{
+                            matchingScore5 = 0;
+                        }
+                } else {
+                    matchingScore5 = (employeeYears * 100) / filterYears;
+                }
+            }
+
+            matchingScore =
+                (
+                    matchingScore2 +
+                    matchingScore3 +
+                    matchingScore4 +
+                    matchingScore5) /
+                4;
+
+            return matchingScore;
         }
-    })
-}
 
-module.exports = { searchStaff }
+        async function searchEmployees(filters) {
+            const matchingPromises = employees.map((employee) =>
+                calculateMatchingScore(employee, filters)
+            );
+            const matchingResults = await Promise.all(matchingPromises);
+        
+            const matchedEmployees = [];
+            const languageMap = new Map();
+            const languages = await Language.find({}, { _id: 1, name: 1 });
+            languages.forEach((language) => {
+            languageMap.set(language._id.toString(), language.name);
+            });
+
+            // const groupedEmployees = {};
+            for (let i = 0; i < employees.length; i++) {
+                const employee = employees[i];
+                const matchingScore = matchingResults[i];
+                const userLanguageNames = employee.userLanguage.map((languageId) =>
+                  languageMap.get(languageId.toString())
+                );
+                const employeeWithUserLanguageName = {
+                  ...employee._doc,
+                  userLanguage: undefined, // Bỏ trường userLanguage
+                  userLanguageNames,
+                  matchingScore: matchingScore.toFixed(2) + '%',
+                };
+                matchedEmployees.push(employeeWithUserLanguageName);
+              }
+        
+            // Sắp xếp danh sách nhân viên theo điểm phù hợp giảm dần
+            // matchedEmployees.sort((a, b) => b.matchingScore - a.matchingScore);
+            matchedEmployees.sort((a, b) => parseFloat(b.matchingScore) - parseFloat(a.matchingScore));
+
+            return matchedEmployees;
+            // const output = matchedEmployees.slice(0, 3);
+            // return output;
+        }
+
+        const matchedStaffs = searchEmployees(filters);
+
+        return matchedStaffs;
+    } catch (error) {
+        throw error;
+    }
+};
+
+module.exports = { searchStaff };

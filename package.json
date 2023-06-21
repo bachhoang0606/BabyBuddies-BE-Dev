@@ -2,6 +2,7 @@
   "name": "express_boilerplate",
   "version": "1.0.0",
   "scripts": {
+    "pretty": "prettier --single-quote --trailing-comma all --tab-width 4 --write src/**/*.{js,json}",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
@@ -40,7 +41,7 @@
 >>>>>>> 6fd0ceb5ecfe90147d514c42cdc3ddb3cfd5cad5
     "lint-staged": "^11.2.0",
     "nodemon": "^2.0.22",
-    "prettier": "^2.0.5"
+    "prettier": "2.8.8"
   },
   "lint-staged": {
     "": "eslint"
