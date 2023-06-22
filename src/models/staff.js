@@ -27,6 +27,7 @@ const staffSchema = new mongoose.Schema(
         },
         birthday: Date,
         salary: Number,
+        imageLink: String,
         userLanguage: [{ type: ObjectId, ref: 'Language', required: true }],
         rating: [
             {
