@@ -47,27 +47,6 @@ const staffSchema = new mongoose.Schema(
         versionKey: false,
     },
 
-    birthday: Date,
-    salary: Number,
-    imageLink: String,
-    userLanguage: [{ type: ObjectId, ref: 'Language', required: true }],
-    rating: [
-      {
-        userId: { type: ObjectId, ref: 'Account', required: true },
-        review: { type: String, required: true },
-        star: {
-          type: Number,
-          min: 1,
-          max: 5,
-          required: true,
-        },
-      },
-    ],
-  },
-  {
-    timestamps: true,
-    versionKey: false,
-  },
-);
+)
 
 module.exports = mongoose.model('Staff', staffSchema);

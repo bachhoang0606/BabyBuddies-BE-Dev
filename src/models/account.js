@@ -20,30 +20,24 @@ const accountSchema = new mongoose.Schema(
             required: true,
             default: AccountStatusEnum.Active,
         },
+        userInfo: {
+          name: { type: String, required: true },
+          gender: { type: String, required: true },
+          address: { type: String, required: true },
+          phone: { type: String, required: true },
+          nationality: { type: String, required: true },
+          wantTo: {
+            type: String,
+            enum: Object.values(WantToEnum),
+            required: true,
+            default: WantToEnum.ChildCare,
+          },
+        }
     },
     {
         timestamps: true,
         versionKey: false,
     },
-
-    userInfo: {
-      name: { type: String, required: true },
-      gender: { type: String, required: true },
-      address: { type: String, required: true },
-      phone: { type: String, required: true },
-      nationality: { type: String, required: true },
-      wantTo: {
-        type: String,
-        enum: Object.values(WantToEnum),
-        required: true,
-        default: WantToEnum.ChildCare,
-      },
-    }
-  },
-  {
-    timestamps: true,
-    versionKey: false,
-  },
 );
 
 module.exports = mongoose.model('Account', accountSchema);
