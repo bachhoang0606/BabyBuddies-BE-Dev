@@ -24,18 +24,10 @@ const searchStaff = async (filters) => {
             const { salary, userLanguage, careExp, cookExp } = filters;
             // const averageRating = calculateAverageRating(employee);
 
-            if(salary){
-                let matchingScore3 = 0;
-            }
-            if(userLanguage){
-                let matchingScore2 = 0;
-            }
-            if(careExp){
-                let matchingScore4 = 0;
-            }
-            if(cookExp){
-                let matchingScore5 = 0;
-            }
+            let matchingScore2 = 0;
+            let matchingScore3 = 0;
+            let matchingScore4 = 0;
+            let matchingScore5 = 0;
             
             // if (rating !== undefined) {
             //     if (averageRating === rating) {
@@ -62,7 +54,9 @@ const searchStaff = async (filters) => {
                     return count;
                 }, 0);
                 matchingScore2 = (matchingLanguageCount / userLanguages.length) * 100;
-                // console.log(matchingScore2);
+                // console.log(matchingLanguageCount);
+                // console.log(userLanguages.length);
+                console.log(matchingScore2);
             }
 
             if (salary !== undefined) {
