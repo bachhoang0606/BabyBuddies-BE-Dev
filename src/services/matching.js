@@ -56,7 +56,7 @@ const searchStaff = async (filters) => {
                 matchingScore2 = (matchingLanguageCount / userLanguages.length) * 100;
                 // console.log(matchingLanguageCount);
                 // console.log(userLanguages.length);
-                console.log(matchingScore2);
+                // console.log(matchingScore2);
             }
 
             if (salary !== undefined) {
