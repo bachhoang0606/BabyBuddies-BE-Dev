@@ -64,6 +64,14 @@ const findStaff = async (condition) => {
                     as: 'userLanguage',
                 },
             },
+            {
+                $lookup: {
+                    from: 'accounts',
+                    localField: 'rating.userId',
+                    foreignField: '_id',
+                    as: 'ratingUser',
+                },
+            },
         ]);
         return staff;
     }
