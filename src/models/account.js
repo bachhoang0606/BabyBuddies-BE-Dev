@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const RoleEnum = require('../constants/RoleEnum');
+const { ObjectId } = require('mongoose').Types;
 
 const AccountStatusEnum = require('../constants/AccountStatusEnum');
 const WantToEnum = require('../constants/WantToEnum');

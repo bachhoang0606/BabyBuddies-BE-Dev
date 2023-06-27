@@ -73,7 +73,7 @@ const findStaff = async (condition) => {
                 },
             },
         ]);
-        return staff;
+        return staff[0];
     }
 
     if (typeof condition === 'object' && condition !== null) {
