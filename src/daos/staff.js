@@ -65,12 +65,126 @@ const findStaff = async (condition) => {
                 },
             },
             {
-                $lookup: {
-                    from: 'accounts',
-                    localField: 'rating.userId',
-                    foreignField: '_id',
-                    as: 'ratingUser',
-                },
+                $unwind:
+                    /**
+                     * path: Path to the array field.
+                     * includeArrayIndex: Optional name for index.
+                     * preserveNullAndEmptyArrays: Optional
+                     *   toggle to unwind null and empty values.
+                     */
+                    {
+                        path: '$rating',
+                        preserveNullAndEmptyArrays: true,
+                    },
+            },
+            {
+                $lookup:
+                    /**
+                     * from: The target collection.
+                     * localField: The local join field.
+                     * foreignField: The target join field.
+                     * as: The name for the results.
+                     * pipeline: Optional pipeline to run on the foreign collection.
+                     * let: Optional variables to use in the pipeline field stages.
+                     */
+                    {
+                        from: 'accounts',
+                        localField: 'rating.userId',
+                        foreignField: '_id',
+                        as: 'accounts',
+                    },
+            },
+            {
+                $unwind:
+                    /**
+                     * path: Path to the array field.
+                     * includeArrayIndex: Optional name for index.
+                     * preserveNullAndEmptyArrays: Optional
+                     *   toggle to unwind null and empty values.
+                     */
+                    {
+                        path: '$accounts',
+                        preserveNullAndEmptyArrays: true,
+                    },
+            },
+            {
+                $project:
+                    /**
+                     * specifications: The fields to
+                     *   include or exclude.
+                     */
+                    {
+                        _id: 1,
+                        fullName: 1,
+                        email: 1,
+                        address: 1,
+                        phone: 1,
+                        cookExp: 1,
+                        careExp: 1,
+                        gender: 1,
+                        birthday: 1,
+                        salary: 1,
+                        imageLink: 1,
+                        userLanguage: 1,
+                        rating: {
+                            $cond: {
+                                if: {
+                                    $ifNull: ['$rating', false],
+                                },
+                                then: {
+                                    _id: '$rating._id',
+                                    userId: '$rating.userId',
+                                    review: '$rating.review',
+                                    star: '$rating.star',
+                                    username: '$accounts.username',
+                                },
+                                else: '$$REMOVE',
+                            },
+                        },
+                    },
+            },
+            {
+                $group:
+                    /**
+                     * specifications: The fields to
+                     *   include or exclude.
+                     */
+                    {
+                        _id: '$_id',
+                        fullName: {
+                            $first: '$fullName',
+                        },
+                        email: {
+                            $first: '$email',
+                        },
+                        address: {
+                            $first: '$address',
+                        },
+                        phone: {
+                            $first: '$phone',
+                        },
+                        cookExp: {
+                            $first: '$cookExp',
+                        },
+                        careExp: {
+                            $first: '$careExp',
+                        },
+                        gender: {
+                            $first: '$gender',
+                        },
+                        birthday: {
+                            $first: '$birthday',
+                        },
+                        salary: {
+                            $first: '$salary',
+                        },
+                        userLanguage: {
+                            $first: '$userLanguage',
+                        },
+                        ratings: {
+                            $push: '$rating',
+                        },
+                    },
             },
         ]);
         return staff[0];
