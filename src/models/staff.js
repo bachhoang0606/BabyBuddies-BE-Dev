@@ -46,7 +46,6 @@ const staffSchema = new mongoose.Schema(
         timestamps: true,
         versionKey: false,
     },
-
-)
+);
 
 module.exports = mongoose.model('Staff', staffSchema);
