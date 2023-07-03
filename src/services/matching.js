@@ -20,15 +20,15 @@ const searchStaff = async (filters) => {
 
         async function calculateMatchingScore(employee, filters) {
             let matchingScore = 0;
-            // let matchingScore1 = 0;
-            let matchingScore2 = 0;
-            let matchingScore3 = 0;
-            let matchingScore4 = 0;
-            let matchingScore5 = 0;
 
             const { salary, userLanguage, careExp, cookExp } = filters;
             // const averageRating = calculateAverageRating(employee);
 
+            let matchingScore2 = 0;
+            let matchingScore3 = 0;
+            let matchingScore4 = 0;
+            let matchingScore5 = 0;
+            
             // if (rating !== undefined) {
             //     if (averageRating === rating) {
             //         matchingScore1 = 100;
@@ -54,6 +54,8 @@ const searchStaff = async (filters) => {
                     return count;
                 }, 0);
                 matchingScore2 = (matchingLanguageCount / userLanguages.length) * 100;
+                // console.log(matchingLanguageCount);
+                // console.log(userLanguages.length);
                 // console.log(matchingScore2);
             }
 
@@ -125,13 +127,89 @@ const searchStaff = async (filters) => {
                 }
             }
 
-            matchingScore =
+            if(salary != undefined && userLanguage != undefined && cookExp != undefined && careExp != undefined){
+                matchingScore =
                 (
                     matchingScore2 +
                     matchingScore3 +
                     matchingScore4 +
                     matchingScore5) /
                 4;
+            }else if (salary == undefined && userLanguage != undefined && cookExp != undefined && careExp != undefined){
+                matchingScore =
+                (
+                    matchingScore2 +
+                    matchingScore4 +
+                    matchingScore5) /
+                3;
+            }else if (salary != undefined && userLanguage == undefined && cookExp != undefined && careExp != undefined){
+                matchingScore =
+                (
+                    matchingScore3 +
+                    matchingScore4 +
+                    matchingScore5) /
+                3;
+            }else if (salary != undefined && userLanguage != undefined && cookExp != undefined && careExp == undefined){
+                matchingScore =
+                (
+                    matchingScore2 +
+                    matchingScore3 +
+                    matchingScore5) /
+                3;
+            }else if (salary != undefined && userLanguage != undefined && cookExp == undefined && careExp != undefined){
+                matchingScore =
+                (
+                    matchingScore2 +
+                    matchingScore4 +
+                    matchingScore3) /
+                3;
+            }else if (salary == undefined && userLanguage == undefined && cookExp != undefined && careExp != undefined){
+                matchingScore =
+                (
+                    matchingScore4 +
+                    matchingScore5) /
+                2;
+            }else if (salary == undefined && userLanguage != undefined && cookExp == undefined && careExp != undefined){
+                matchingScore =
+                (
+                    matchingScore4 +
+                    matchingScore2) /
+                2;
+            }else if (salary == undefined && userLanguage != undefined && cookExp != undefined && careExp == undefined){
+                matchingScore =
+                (
+                    matchingScore5 +
+                    matchingScore2) /
+                2;
+            }else if (salary != undefined && userLanguage == undefined && cookExp == undefined && careExp != undefined){
+                matchingScore =
+                (
+                    matchingScore4 +
+                    matchingScore3) /
+                2;
+            }else if (salary != undefined && userLanguage == undefined && cookExp != undefined && careExp == undefined){
+                matchingScore =
+                (
+                    matchingScore3 +
+                    matchingScore5) /
+                2;
+            }else if (salary != undefined && userLanguage != undefined && cookExp == undefined && careExp == undefined){
+                matchingScore =
+                (
+                    matchingScore2 +
+                    matchingScore3) /
+                2;
+            }else if (salary == undefined && userLanguage == undefined && cookExp == undefined && careExp != undefined){
+                matchingScore = matchingScore4;
+            }else if (salary != undefined && userLanguage == undefined && cookExp == undefined && careExp == undefined){
+                matchingScore = matchingScore3;
+            }else if (salary == undefined && userLanguage != undefined && cookExp == undefined && careExp == undefined){
+                matchingScore = matchingScore2;
+            }else if (salary == undefined && userLanguage == undefined && cookExp != undefined && careExp == undefined){
+                matchingScore = matchingScore5;
+            }else{
+                matchingScore = 100;
+            }
 
             return matchingScore;
         }
