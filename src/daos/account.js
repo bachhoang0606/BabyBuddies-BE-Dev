@@ -62,6 +62,7 @@ const findAccount = async (condition) => {
                     _id: '$_id',
                     accountStatus: '$accountStatus',
                     username: '$username',
+                    userInfo: '$userInfo',
                     booking: {
                         $cond: {
                             if: {
@@ -98,6 +99,9 @@ const findAccount = async (condition) => {
                         },
                         username: {
                             $first: '$username',
+                        },
+                        userInfo: {
+                            $first: '$userInfo',
                         },
                         accountStatus: {
                             $first: '$accountStatus',
