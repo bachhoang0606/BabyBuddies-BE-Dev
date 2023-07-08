@@ -156,6 +156,9 @@ const allStaff = async () => {
                     salary: {
                         $first: '$salary',
                     },
+                    imageLink: {
+                        $first: '$imageLink',
+                    },
                     userLanguage: {
                         $first: '$userLanguage',
                     },
