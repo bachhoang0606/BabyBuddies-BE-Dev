@@ -14,18 +14,22 @@ const storeRating = async (userId, staffId, data) => {
     if (!account)
         throw new CustomError(errorCodes.NOT_FOUND, 'Account not found!');
     if (
-        !account.booking.find(
-            (booking) =>
-                booking.staffId.equals(staff._id) &&
-                booking.status == BookingStatusEnum.Done,
-        )
-    )
-        throw new CustomError(
-            errorCodes.FORBIDDEN,
-            'The user has not hired this staff yet!',
-        );
+      account.booking.find(
+        (booking) =>
+          booking.staffId == (staff._id.toString()) &&
+          booking.status == BookingStatusEnum.Done,
+      )
+    ) {
     const rating = await ratingDao.storeRating(userId, staffId, data);
     return rating;
+    } else {
+      throw new CustomError(
+          errorCodes.FORBIDDEN,
+          'The user has not hired this staff yet!',
+      );
+    }
+
+
 };
 
 const deleteRating = async (ratingId) => {

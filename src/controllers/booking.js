@@ -16,8 +16,8 @@ const findBooking = async (req, res) => {
 
 const storeBooking = async (req, res) => {
     // const userId = req.user._id;
-    const userId = '647b77348af6c322511fed59';
-    const { staffId, startDay, endDay, message, total } = req.body;
+    // const userId = '647b77348af6c322511fed5a';
+    const { staffId, startDay, endDay, message, total, userId } = req.body;
     const result = await bookingService.storeBooking(userId, {
         staffId,
         startDay,
