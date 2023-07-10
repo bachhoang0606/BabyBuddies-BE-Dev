@@ -262,6 +262,7 @@ const findStaff = async (condition) => {
                                     review: '$rating.review',
                                     star: '$rating.star',
                                     username: '$accounts.username',
+                                    username: '$accounts.userInfo.name',
                                 },
                                 else: '$$REMOVE',
                             },
@@ -302,6 +303,9 @@ const findStaff = async (condition) => {
                         },
                         salary: {
                             $first: '$salary',
+                        },
+                        imageLink: {
+                          $first: '$imageLink',
                         },
                         userLanguage: {
                             $first: '$userLanguage',
