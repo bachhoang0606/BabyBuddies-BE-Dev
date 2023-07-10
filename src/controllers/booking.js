@@ -2,7 +2,7 @@ const bookingService = require('../services/booking');
 
 const allBooking = async (req, res) => {
     // const userId = req.user._id;
-    const userId = '647b77348af6c322511fed59';
+    // const userId = '647b77348af6c322511fed59';
     const conditions = req.query;
     const bookings = await bookingService.allBooking(userId, conditions);
     res.status(200).send(bookings);

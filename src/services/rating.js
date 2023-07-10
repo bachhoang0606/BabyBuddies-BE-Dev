@@ -16,8 +16,7 @@ const storeRating = async (userId, staffId, data) => {
     if (
       account.booking.find(
         (booking) =>
-          booking.staffId == (staff._id.toString()) &&
-          booking.status == BookingStatusEnum.Done,
+          booking.staffId == (staff._id.toString())
       )
     ) {
     const rating = await ratingDao.storeRating(userId, staffId, data);

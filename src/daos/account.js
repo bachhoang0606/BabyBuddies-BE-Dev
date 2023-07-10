@@ -78,6 +78,7 @@ const findAccount = async (condition) => {
                                         address: '$staff.address',
                                         gender: '$staff.gender',
                                         salary: '$staff.salary',
+                                        imageLink: '$staff.imageLink',
                                     },
                                 ],
                             },
