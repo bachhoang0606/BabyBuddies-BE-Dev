@@ -28,7 +28,7 @@ const searchStaff = async (filters) => {
             let matchingScore3 = 0;
             let matchingScore4 = 0;
             let matchingScore5 = 0;
-            
+
             // if (rating !== undefined) {
             //     if (averageRating === rating) {
             //         matchingScore1 = 100;
@@ -78,7 +78,7 @@ const searchStaff = async (filters) => {
             if (careExp !== undefined) {
                 const experienceValues = {
                     'non': 0,
-                    '1 years': 1,
+                    '1 year': 1,
                     '2 years': 2,
                     '3 years': 3,
                     '> 3 years': 4,
@@ -104,7 +104,7 @@ const searchStaff = async (filters) => {
             if (cookExp !== undefined) {
                 const experienceValues = {
                     'non': 0,
-                    '1 years': 1,
+                    '1 year': 1,
                     '2 years': 2,
                     '3 years': 3,
                     '> 3 years': 4,
@@ -219,7 +219,7 @@ const searchStaff = async (filters) => {
                 calculateMatchingScore(employee, filters)
             );
             const matchingResults = await Promise.all(matchingPromises);
-        
+
             const matchedEmployees = [];
             const languageMap = new Map();
             const languages = await Language.find({}, { _id: 1, name: 1 });
@@ -242,7 +242,7 @@ const searchStaff = async (filters) => {
                 };
                 matchedEmployees.push(employeeWithUserLanguageName);
               }
-        
+
             // Sắp xếp danh sách nhân viên theo điểm phù hợp giảm dần
             // matchedEmployees.sort((a, b) => b.matchingScore - a.matchingScore);
             matchedEmployees.sort((a, b) => parseFloat(b.matchingScore) - parseFloat(a.matchingScore));
