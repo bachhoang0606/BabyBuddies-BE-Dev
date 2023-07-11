@@ -162,7 +162,7 @@ const allStaff = async () => {
                     userLanguage: {
                         $first: '$userLanguage',
                     },
-                    ratings: {
+                    rating: {
                         $push: '$rating',
                     },
                 },
@@ -322,6 +322,9 @@ const findStaff = async (condition) => {
     if (typeof condition === 'object' && condition !== null) {
         const staff = await Staff.findOne(condition);
         return staff;
+    }
+    else {
+
     }
 
     return null;
