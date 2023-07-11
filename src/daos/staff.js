@@ -323,10 +323,6 @@ const findStaff = async (condition) => {
         const staff = await Staff.findOne(condition);
         return staff;
     }
-    else {
-
-    }
-
     return null;
 };
 
